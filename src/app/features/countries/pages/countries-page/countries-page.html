@@ -1,0 +1,56 @@
+<section class="bg-base-200 min-h-screen py-10 px-8">
+  <div class="max-w-5xl mx-auto">
+
+    <!-- Hero -->
+    <h1 class="text-4xl font-extrabold tracking-tight mb-1">Countries</h1>
+    <p class="text-base-content/60 text-lg mb-6">
+      Paises — powered by CountriesAPI
+    </p>
+
+    <!-- Spinner de carga -->
+    @if (countriesResource.isLoading()) {
+      <div class="flex justify-center items-center h-64">
+        <span class="loading loading-spinner loading-lg text-primary"></span>
+      </div>
+    }
+
+    <!-- Error -->
+    @if (countriesResource.error()) {
+      <div class="alert alert-error max-w-lg mx-auto mt-8">
+        <span>Error al cargar los personajes. Intenta de nuevo.</span>
+      </div>
+    }
+
+    
+
+      <!-- Grid de cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        @for (char of countriesResource.value()!.results; track char.id) {
+          <a
+            [routerLink]="['/countries', char.id]"
+            class="card card-bordered bg-base-100 shadow hover:shadow-lg transition-shadow cursor-pointer">
+            <figure class="pt-6">
+              <img
+                [src]="char.portrait_path"
+                [alt]="char.name"
+                class="w-24 h-24 rounded-full object-cover ring-2 ring-primary" />
+            </figure>
+            <div class="card-body items-center text-center p-4">
+              <h2 class="card-title text-sm">{{ char.name }}</h2>
+              <p class="text-xs text-base-content/60">{{ char.occupation }}</p>
+            </div>
+          </a>
+        }
+      </div>
+
+      <!-- Estado vacío -->
+      @if (countriesResource.value()!.results.length === 0) {
+        <div class="text-center py-20">
+          <p class="text-2xl font-bold mb-2">Sin resultados</p>
+          <p class="text-base-content/50">No se encontraron paises para esta página.</p>
+        </div>
+      }
+    
+
+  </div>
+</section>
